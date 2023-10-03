@@ -22,14 +22,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login',  [RegisterController::class, 'login']);
-
+Route::get('authors',[AuthorController::class,'index']);
 Route::middleware('auth:api')->group( function () {
     Route::get('books',[BookController::class,'index']);
     Route::post('books',[BookController::class,'store']);
     Route::get('books/{id}',[BookController::class,'show']);
     Route::put('books/{id}',[BookController::class,'update']);
     Route::delete('books/{id}',[BookController::class,'destroy']);
-    Route::get('authors',[AuthorController::class,'index']);
+    // Route::get('authors',[AuthorController::class,'index']);
     Route::post('authors',[AuthorController::class,'store']);
     Route::get('authors/{id}',[AuthorController::class,'show']);
 });
