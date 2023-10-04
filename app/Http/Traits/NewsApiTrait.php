@@ -7,7 +7,7 @@ use Session;
 trait NewsApiTrait
 {
 
-    public function news()
+    public static function news()
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -43,7 +43,7 @@ trait NewsApiTrait
         $response = curl_exec($curl);
 
         curl_close($curl);
-        dd($response);
+        return  json_decode($response, true); ;
     }
 
 
