@@ -10,6 +10,7 @@ use App\Http\Traits\NewsApiTrait;
 use App\Http\Traits\NewsApiOrgTrait;
 use App\Http\Traits\ArticleTrait;
 use App\Http\Traits\GuardianTrait;
+use App\Http\Traits\SetupHelperTrait;
 use App\Http\Resources\GaurdianAPIResource;
 use App\Http\Resources\NewsAPIResource;
 use App\Http\Resources\NewsAPIOrgResource;
@@ -17,12 +18,12 @@ use App\Http\Resources\NewsAPIOrgResource;
 class ArticleController extends BaseController
 {
     use ArticleTrait;
+    use SetupHelperTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
         //
     }
 
@@ -31,6 +32,10 @@ class ArticleController extends BaseController
      */
     public function create()
     {
+        $this->update_category_list();
+        $this->update_source_list();
+        $this->update_author_list();
+        dd("finished");
         $news_apiorg = NewsAPIOrgResource::collection(NewsApiOrgTrait::news());
         $news_guardian = GaurdianAPIResource::collection(GuardianTrait::news());
         $newsapi = NewsAPIResource::collection(NewsApiTrait::news());

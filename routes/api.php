@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\AuthorController;
+use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\UserPreferenceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login',  [RegisterController::class, 'login']);
 Route::get('authors',[AuthorController::class,'index']);
+Route::get('articles',[ArticleController::class,'create']);
+Route::post('preference',[UserPreferenceController::class,'store']);
 Route::middleware('auth:api')->group( function () {
     Route::get('books',[BookController::class,'index']);
     Route::post('books',[BookController::class,'store']);

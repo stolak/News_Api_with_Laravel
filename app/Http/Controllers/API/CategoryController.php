@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Author;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -14,7 +14,7 @@ class AuthorController extends BaseController
      */
     public function index()
     {
-        return $this->sendResponse(Author::All(),[]);
+        return $this->sendResponse(Category::All(),[]);
     }
 
     /**
@@ -30,14 +30,7 @@ class AuthorController extends BaseController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'author' => 'required|unique:authors',
-        ]);
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-        $author = Author::create($request->all());
-        return $this->sendResponse($author,'');
+        //
 
     }
 
@@ -46,19 +39,13 @@ class AuthorController extends BaseController
      */
     public function show($id)
     {
-
-        // return $this->sendResponse($book, 'Successful');
-
-
-        $author = Author::find($id);
-        if($author) return $this->sendResponse($author, 'Successful');
-        return $this->sendError('Author not found');
+//
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Author $author)
+    public function edit(Category $category)
     {
         //
     }
@@ -66,7 +53,7 @@ class AuthorController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -74,7 +61,7 @@ class AuthorController extends BaseController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy(Category $category)
     {
         //
     }
