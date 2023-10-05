@@ -43,7 +43,7 @@ trait NewsApiTrait
         $response = curl_exec($curl);
 
         curl_close($curl);
-        return  json_decode($response, true); ;
+        return  json_decode($response, true)['articles']['results'];
     }
 
 

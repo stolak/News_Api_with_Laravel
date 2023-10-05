@@ -14,11 +14,8 @@ use App\Http\Resources\GaurdianAPIResource;
 use App\Http\Resources\NewsAPIResource;
 use App\Http\Resources\NewsAPIOrgResource;
 
-class AuthorController extends BaseController
+class ArticleController extends BaseController
 {
-    // use NewsApiOrgTrait;
-    // use NewsApiTrait;
-    // use GuardianTrait;
     use ArticleTrait;
     /**
      * Display a listing of the resource.
@@ -26,6 +23,14 @@ class AuthorController extends BaseController
     public function index()
     {
 
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
         $news_apiorg = NewsAPIOrgResource::collection(NewsApiOrgTrait::news());
         $news_guardian = GaurdianAPIResource::collection(GuardianTrait::news());
         $newsapi = NewsAPIResource::collection(NewsApiTrait::news());
@@ -34,18 +39,6 @@ class AuthorController extends BaseController
         $this->store_article($news_guardian);
         $this->store_article($newsapi);
         return $this->sendResponse('sucess',[]);
-        // return GaurdianAPIResource::collection($news['response']['results']);
-        // return NewsAPIResource::collection($news['articles']['results']);
-        // UserResource::collection
-        // return $this->sendResponse(Author::All(),[]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**

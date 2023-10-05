@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NewsApi extends JsonResource
+class NewsAPIResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,13 @@ class NewsApi extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => 'bxbxbd',
             'title' => $this['title'],
             'body' => $this['body'],
-            // 'created_at' => $this->created_at,
-            // 'updated_at' => $this->updated_at,
+            'author' => 'Unknown', //$this['author'],
+            'category' => $this['source']['dataType'], //$this['category'],
+            'publish_date' => $this['date'],
+            'source' => $this['source']['title'],
+            'url' => $this['url'],
         ];
     }
 }
