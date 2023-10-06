@@ -27,6 +27,8 @@ Route::post('login',  [RegisterController::class, 'login']);
 Route::get('authors',[AuthorController::class,'index']);
 Route::get('articles',[ArticleController::class,'create']);
 Route::post('preference',[UserPreferenceController::class,'store']);
+Route::get('articles',[ArticleController::class,'create']);
+Route::get('preference-articles',[ArticleController::class,'show_by_user_preference']);
 Route::middleware('auth:api')->group( function () {
     Route::get('books',[BookController::class,'index']);
     Route::post('books',[BookController::class,'store']);

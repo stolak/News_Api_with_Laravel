@@ -59,12 +59,18 @@ class UserPreferenceController extends BaseController
         return $this->sendError('preference not found');
     }
 
+    /**
+     * Display the specified resource.
+     */
+
+
      /**
      * Display the specified resource.
      */
-    public function show_user_id()
+    public function show_by_user_id()
     {
-        $preference = UsersPreference::find(Auth::user()->id);
+        $user_id= 9;//Auth::user()->id;
+        $preference = UsersPreference::where('user_id', $user_id)->first();
         if($preference) return $this->sendResponse($preference, 'Successful');
         return $this->sendError('Preference not found');
     }
