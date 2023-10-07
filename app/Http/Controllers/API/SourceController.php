@@ -6,7 +6,7 @@ use App\Models\Source;
 use Illuminate\Http\Request;
 use Validator;
 
-class AuthorController extends BaseController
+class SourceController extends BaseController
 {
 
     /**

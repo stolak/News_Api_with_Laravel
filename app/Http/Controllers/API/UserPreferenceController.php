@@ -31,14 +31,19 @@ class UserPreferenceController extends BaseController
      */
     public function store(Request $request)
     {
+        if(!Auth::user()){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
         ]);
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());
         }
+        $user_id=$request->get('user_id');
+    }else{
+        $user_id=Auth::user()->id;
+    }
         $preference = UsersPreference::updateOrCreate([
-            'user_id' => $request->get('user_id'), // Auth::user()->id,
+            'user_id' => $user_id, // Auth::user()->id,
             ],$request->all());
 
         return $this->sendResponse($preference,'');

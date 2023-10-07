@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\AuthorController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\SourceController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\UserPreferenceController;
 
@@ -25,11 +27,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login',  [RegisterController::class, 'login']);
 Route::get('authors',[AuthorController::class,'index']);
+Route::get('sources',[SourceController::class,'index']);
+Route::get('categories',[CategoryController::class,'index']);
 Route::get('articles',[ArticleController::class,'create']);
-Route::post('preference',[UserPreferenceController::class,'store']);
+
+Route::get('preferences',[UserPreferenceController::class,'show_by_user_id']);
 Route::get('articles',[ArticleController::class,'create']);
 Route::get('preference-articles',[ArticleController::class,'show_by_user_preference']);
 Route::middleware('auth:api')->group( function () {
+    Route::post('preference',[UserPreferenceController::class,'store']);
     Route::get('books',[BookController::class,'index']);
     Route::post('books',[BookController::class,'store']);
     Route::get('books/{id}',[BookController::class,'show']);

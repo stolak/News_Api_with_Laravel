@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Validator;
 
-class AuthorController extends BaseController
+class CategoryController extends BaseController
 {
 
     /**
