@@ -44,7 +44,12 @@ class UserPreferenceController extends BaseController
     }
         $preference = UsersPreference::updateOrCreate([
             'user_id' => $user_id, // Auth::user()->id,
-            ],$request->all());
+            ],[
+                'category'=>$request->get('category')?$request->get('category'):'',
+                'author'=>$request->get('author')?$request->get('author'):'',
+                'source'=>$request->get('source')?$request->get('source'):'',
+            ]
+        );
 
         return $this->sendResponse($preference,'');
 
@@ -74,7 +79,7 @@ class UserPreferenceController extends BaseController
      */
     public function show_by_user_id()
     {
-        $user_id= 9;//Auth::user()->id;
+        $user_id = Auth::user()->id;
         $preference = UsersPreference::where('user_id', $user_id)->first();
         if($preference) return $this->sendResponse($preference, 'Successful');
         return $this->sendError('Preference not found');

@@ -24,9 +24,17 @@ class ArticleController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($keyword='')
     {
-        //
+        // $keyword = $request->get('keyword');
+                $article = Article:: Where(function($query) use  ($keyword) {
+                    $query->where('body', 'like', '%'.$keyword.'%')
+                          ->orwhere('body', 'like', '%'.$keyword.'%');
+                })
+                ->get();
+                // return $this->sendResponse($keyword, 'Successful');
+        if($article) return $this->sendResponse($article, 'Successful');
+        return $this->sendError('Articles not found');
     }
 
     /**
@@ -83,24 +91,29 @@ class ArticleController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show_by_user_preference(Request $request)
+    public function show_by_user_preference($keyword='')
     {
-        $user_id = 4; //Auth::user()->id;
-        $user_preference = UsersPreference::find($user_id);
-// dd($user_preference);
-        $source=$user_preference->source;
-        $category=$user_preference->category;
-        $author=$user_preference->author;
+        if(Auth::user()){
+        $user_id = Auth::user()->id;
+        $user_preference = UsersPreference::where('user_id', $user_id)->first();
+        $source=$user_preference->source??null;
+        $category=$user_preference->category??null;
+        $author=$user_preference->author??null;
+        }else{
+            $source=null;
+            $category=null;
+            $author=null;
+        }
 
-                $key_word = $request->get('key_word');
-                $article = Article:: where('source', $source? '=':'<>', $source)
-                ->where('author', $author? '=':'<>', $author)
-                ->where('category', $category? '=':'<>', $category)
-                ->Where(function($query) use  ($key_word) {
-                    $query->where('body', 'like', '%'.$key_word.'%')
-                          ->orwhere('body', 'like', '%'.$key_word.'%');
-                })
-                ->get();
+        // $keyword = $request->get('keyword');
+        $article = Article:: where('source', $source? '=':'<>', $source)
+        ->where('author', $author? '=':'<>', $author)
+        ->where('category', $category? '=':'<>', $category)
+        ->Where(function($query) use  ($keyword) {
+            $query->where('body', 'like', '%'.$keyword.'%')
+                    ->orwhere('body', 'like', '%'.$keyword.'%');
+        })
+        ->get();
 
         if($article) return $this->sendResponse($article, 'Successful');
         return $this->sendError('Author not found');

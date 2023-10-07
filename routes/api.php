@@ -29,12 +29,15 @@ Route::post('login',  [RegisterController::class, 'login']);
 Route::get('authors',[AuthorController::class,'index']);
 Route::get('sources',[SourceController::class,'index']);
 Route::get('categories',[CategoryController::class,'index']);
-Route::get('articles',[ArticleController::class,'create']);
+Route::post('articles',[ArticleController::class,'create']);
 
-Route::get('preferences',[UserPreferenceController::class,'show_by_user_id']);
-Route::get('articles',[ArticleController::class,'create']);
-Route::get('preference-articles',[ArticleController::class,'show_by_user_preference']);
+
+Route::get('articles-with-key/{keyword?}',[ArticleController::class,'index']);
+// Route::get('articles',[ArticleController::class,'index']);
+Route::get('articles',[ArticleController::class,'index']);
 Route::middleware('auth:api')->group( function () {
+    Route::get('preferences',[UserPreferenceController::class,'show_by_user_id']);
+    Route::get('preference-articles/{keyword?}',[ArticleController::class,'show_by_user_preference']);
     Route::post('preference',[UserPreferenceController::class,'store']);
     Route::get('books',[BookController::class,'index']);
     Route::post('books',[BookController::class,'store']);
