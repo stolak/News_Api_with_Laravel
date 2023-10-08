@@ -32,16 +32,15 @@ trait NewsApiTrait
             "news",
             "pr"
           ],
-          "apiKey": "30490716-4ddb-4008-ba4e-1abb5bc04df4",
+          "apiKey": "'.env('NEWSAPI_KEY').'",
           "forceMaxDataTimeWindow": 31
         }',
           CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json'
           ),
         ));
-
+        // "apiKey": "30490716-4ddb-4008-ba4e-1abb5bc04df4",
         $response = curl_exec($curl);
-
         curl_close($curl);
         return  json_decode($response, true)['articles']['results'];
     }

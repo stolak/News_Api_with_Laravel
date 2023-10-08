@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('article_timers', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
-            $table->text('body');
-            $table->string('author');
-            $table->string('category');
-            $table->string('publish_date');
-            $table->string('source');
-            $table->text('url');
-            $table->text('image_url')->nullable();
+            $table->string('last_run');
             $table->timestamps();
         });
     }
@@ -30,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('article_timers');
     }
 };

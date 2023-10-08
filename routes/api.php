@@ -30,6 +30,7 @@ Route::get('authors',[AuthorController::class,'index']);
 Route::get('sources',[SourceController::class,'index']);
 Route::get('categories',[CategoryController::class,'index']);
 Route::post('articles',[ArticleController::class,'create']);
+Route::get('articles1',[ArticleController::class,'create']);
 
 
 Route::get('articles-with-key/{keyword?}',[ArticleController::class,'index']);

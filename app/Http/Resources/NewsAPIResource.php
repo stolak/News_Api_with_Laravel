@@ -22,6 +22,7 @@ class NewsAPIResource extends JsonResource
             'publish_date' => $this['date'],
             'source' => $this['source']['title'],
             'url' => $this['url'],
+            'image_url' => $this['image'],
         ];
     }
 }

@@ -5,19 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class ArticleTimer extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'title',
-        'body',
-        'author',
-        'source',
-        'category',
-        'publish_date',
-        'url',
-        'image_url'
-
+        'last_run',
     ];
 }

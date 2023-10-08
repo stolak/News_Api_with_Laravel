@@ -4,18 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Author;
 use App\Models\Article;
+use App\Models\UsersPreference;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Validator;
-use App\Http\Traits\NewsApiTrait;
-use App\Http\Traits\NewsApiOrgTrait;
 use App\Http\Traits\ArticleTrait;
-use App\Http\Traits\GuardianTrait;
 use App\Http\Traits\SetupHelperTrait;
-use App\Http\Resources\GaurdianAPIResource;
-use App\Http\Resources\NewsAPIResource;
-use App\Http\Resources\NewsAPIOrgResource;
-use App\Models\UsersPreference;
+
 
 class ArticleController extends BaseController
 {
@@ -24,6 +19,13 @@ class ArticleController extends BaseController
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        if($this->is_updateble()){
+            $this->create_new_from_apis();
+        }
+    }
+
     public function index($keyword='')
     {
         // $keyword = $request->get('keyword');
@@ -42,18 +44,7 @@ class ArticleController extends BaseController
      */
     public function create()
     {
-        $this->update_category_list();
-        $this->update_source_list();
-        $this->update_author_list();
-        // dd("finishedrr");
-        return $this->sendResponse('finishedrr',[]);
-        $news_apiorg = NewsAPIOrgResource::collection(NewsApiOrgTrait::news());
-        $news_guardian = GaurdianAPIResource::collection(GuardianTrait::news());
-        $newsapi = NewsAPIResource::collection(NewsApiTrait::news());
-
-        $this->store_article($news_apiorg);
-        $this->store_article($news_guardian);
-        $this->store_article($newsapi);
+        $this->create_new_from_apis();
         return $this->sendResponse('sucess',[]);
     }
 

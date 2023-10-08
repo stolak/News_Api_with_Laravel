@@ -22,6 +22,7 @@ class GaurdianAPIResource extends JsonResource
             'publish_date' => $this['webPublicationDate'],
             'source' => 'The Guardian',
             'url' => $this['webUrl'],
+            'image_url' => '',
         ];
     }
 }
