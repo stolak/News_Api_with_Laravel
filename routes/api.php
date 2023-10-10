@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\RegisterController;
-use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\AuthorController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\SourceController;
@@ -29,23 +28,11 @@ Route::post('login',  [RegisterController::class, 'login']);
 Route::get('authors',[AuthorController::class,'index']);
 Route::get('sources',[SourceController::class,'index']);
 Route::get('categories',[CategoryController::class,'index']);
-Route::post('articles',[ArticleController::class,'create']);
-Route::get('articles1',[ArticleController::class,'create']);
-
-
+Route::any('articles',[ArticleController::class,'create']);
 Route::get('articles-with-key/{keyword?}',[ArticleController::class,'index']);
-// Route::get('articles',[ArticleController::class,'index']);
 Route::get('articles',[ArticleController::class,'index']);
 Route::middleware('auth:api')->group( function () {
     Route::get('preferences',[UserPreferenceController::class,'show_by_user_id']);
     Route::get('preference-articles/{keyword?}',[ArticleController::class,'show_by_user_preference']);
     Route::post('preference',[UserPreferenceController::class,'store']);
-    Route::get('books',[BookController::class,'index']);
-    Route::post('books',[BookController::class,'store']);
-    Route::get('books/{id}',[BookController::class,'show']);
-    Route::put('books/{id}',[BookController::class,'update']);
-    Route::delete('books/{id}',[BookController::class,'destroy']);
-    // Route::get('authors',[AuthorController::class,'index']);
-    Route::post('authors',[AuthorController::class,'store']);
-    Route::get('authors/{id}',[AuthorController::class,'show']);
 });

@@ -39,10 +39,17 @@ trait NewsApiTrait
             'Content-Type: application/json'
           ),
         ));
-        // "apiKey": "30490716-4ddb-4008-ba4e-1abb5bc04df4",
-        $response = curl_exec($curl);
-        curl_close($curl);
-        return  json_decode($response, true)['articles']['results'];
+        
+        
+        try {
+          $response = curl_exec($curl);
+          curl_close($curl);
+          return  json_decode($response, true)['articles']['results'];
+        }
+        //catch exception
+        catch(Exception $e) {
+          return  [];
+        }
     }
 
 
