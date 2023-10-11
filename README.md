@@ -15,12 +15,13 @@ Install all the dependencies using composer
 Copy the example env file and make the required configuration changes in the .env file
 
     cp .env.example .env
+    php artisan migrate
     php artisan key:generate
     php artisan serve
 
 If you are working locally and you encounter the error below which is due to the ssl/ issuer certificate 
 
-    cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data?symbol=AAWW&verify=0
+    cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for ...
 
 You need to edit the following file in vendor/guzzlehttp/guzzle/src/Client.php
 
