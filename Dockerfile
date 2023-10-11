@@ -1,80 +1,53 @@
-FROM php:8.2-apache
+FROM php:8.1.0-apache
 
-# 1. Install development packages and clean up apt cache.
-RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-      procps \
-      nano \
-      git \
-      unzip \
-      libicu-dev \
-      zlib1g-dev \
-      libxml2 \
-      libxml2-dev \
-      libreadline-dev \
-      supervisor \
-      cron \
-      sudo \
-      libzip-dev \
-    && docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install \
-      pdo_mysql \
-      sockets \
-      intl \
-      opcache \
-      zip \
-    && rm -rf /tmp/* \
-    && rm -rf /var/list/apt/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+#php setup, install extensions, setup configs
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libzip-dev \
+    libxml2-dev \
+    mariadb-client \
+    zip \
+    unzip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# RUN apt-get update && apt-get install -y \
-#     curl \
-#     g++ \
-#     git \
-#     libbz2-dev \
-#     libfreetype6-dev \
-#     libicu-dev \
-#     libjpeg-dev \
-#     libmcrypt-dev \
-#     libpng-dev \
-#     libreadline-dev \
-#     sudo \
-#     unzip \
-#     zip \
-#  && rm -rf /var/lib/apt/lists/*
+RUN pecl install zip pcov
+RUN docker-php-ext-enable zip \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install soap \
+    && docker-php-source delete
 
-# 2. Apache configs + document root.
-RUN echo "ServerName laravel-app.local" >> /etc/apache2/apache2.conf
+#disable exposing server information
+RUN sed -ri -e 's!expose_php = On!expose_php = Off!g' $PHP_INI_DIR/php.ini-production \
+    && sed -ri -e 's!ServerTokens OS!ServerTokens Prod!g' /etc/apache2/conf-available/security.conf \
+    && sed -ri -e 's!ServerSignature On!ServerSignature Off!g' /etc/apache2/conf-available/security.conf \
+    && sed -ri -e 's!KeepAliveTimeout .*!KeepAliveTimeout 65!g' /etc/apache2/apache2.conf \
+    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+COPY php/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini.disabled
 
-# 3. mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
-RUN a2enmod rewrite headers
+#apache setup, disable all sites, enable mods, enable configs
+COPY apache/disable-elb-healthcheck-log.conf /etc/apache2/conf-available/
 
-# 4. Start with base PHP config, then add extensions.
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+RUN a2enmod rewrite setenvif \
+    && a2enconf disable-elb-healthcheck-log \ 
+    && a2dissite * \
+    && a2disconf other-vhosts-access-log
 
-RUN docker-php-ext-install \
-    bcmath \
-    bz2 \
-    calendar \
-    iconv \
-    intl \
-    mbstring \
-    opcache \
-    pdo_mysql \
-    zip
+#standard sites available
+COPY apache/sites/*.conf /etc/apache2/sites-available/
 
-# 5. Composer.
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+#composer install
+COPY --from=composer:2.1.9 /usr/bin/composer /usr/bin/composer
 
-# 6. We need a user with the same UID/GID as the host user
-# so when we execute CLI commands, all the host file's permissions and ownership remain intact.
-# Otherwise commands from inside the container would create root-owned files and directories.
-ARG uid
-RUN useradd -G www-data,root -u 1000 -d /home/devuser devuser
-RUN mkdir -p /home/devuser/.composer && \
-    chown -R devuser:devuser /home/devuser
+#adds "dev" stage command to enable xdebug
+COPY commands/enable-xdebug /usr/local/bin/
+RUN chmod +x /usr/local/bin/enable-xdebug \
+    && mkdir -p /usr/local/tasks/
+
+#adds common tasks used through Taskfiles
+COPY tasks/ /usr/local/tasks/
+
+#setup task, for running Taskfiles
+RUN curl -sL https://taskfile.dev/install.sh | BINDIR=/usr/local/bin sh
+
+CMD ["apache2-foreground"]

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('sources', function (Blueprint $table) {
             $table->id();
-            $table->string('source_key');
             $table->string('source');
             $table->timestamps();
         });
