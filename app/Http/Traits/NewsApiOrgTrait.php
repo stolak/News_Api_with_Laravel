@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 use Illuminate\Support\Facades\Http;
 use Session;
+use Exception;
 
 trait NewsApiOrgTrait
 {
@@ -16,7 +17,7 @@ trait NewsApiOrgTrait
             return  json_decode($response, true)['articles'];
           }
           //catch exception
-          catch(Exception $e) {
+          catch(Throwable $e) {
             return  [];
           }
         
