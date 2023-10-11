@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('source_preferences')->nullable();
-            $table->string('author_preferences');
+            $table->text('author_preferences');
             $table->string('category_preferences');
             $table->timestamps();
         });
