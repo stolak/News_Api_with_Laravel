@@ -17,13 +17,14 @@ Copy the example env file and make the required configuration changes in the .en
     cp .env.example .env
     php artisan migrate
     php artisan key:generate
-    php artisan serve
 
-If you are working locally and you encounter the error below which is due to the ssl/ issuer certificate 
+If you are working locally in order to avoid the error below which is due to the ssl/ issuer certificate 
 
     cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for ...
 
-You need to edit the following file in vendor/guzzlehttp/guzzle/src/Client.php
+    cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+
+The above command will edit the following file in vendor/guzzlehttp/guzzle/src/Client.php
 
     $defaults = [
     'allow_redirects' => RedirectMiddleware: :$defaultSettings,
@@ -42,6 +43,9 @@ Change it to:
     'verify'          => false,
     'cookies'         => false
     ];
+    php artisan serve
+
+
 
 To Run test
 
