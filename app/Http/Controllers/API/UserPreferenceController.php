@@ -52,6 +52,7 @@ class UserPreferenceController extends BaseController
         );
 
         return $this->sendResponse($preference,'');
+        
 
     }
 
