@@ -15,11 +15,11 @@ services:
     volumes:
       - ./run/var:/var/lib/mysql
     environment: 
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
   phpmyadmin:
     image: phpmyadmin
-    restart: always
+    restart: always 
     ports:
       - 8081:80
     environment:

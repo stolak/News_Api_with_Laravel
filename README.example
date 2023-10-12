@@ -7,24 +7,18 @@ Clone the repository
 Switch to the repo folder
 
     cd News_Api_with_Laravel
-    cp .env.example .env
-Edit the neccessary variables
 
-Unsing docker image 
+Install all the dependencies using composer
 
-    docker-compose build --no-cache --force-rm
-    docker-compose up
-    docker exec -it article-be-app bash
     composer install
-    cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
-    php artisan key:generate
+
+Copy the example env file and make the required configuration changes in the .env file
+
+    cp .env.example .env
     php artisan migrate
-    php artisan serve
+    php artisan key:generate
 
-
-Note that  the below command is neccessary in order to avoid the error below which is due to the ssl/ issuer certificate
-
-    cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+If you are working locally in order to avoid the error below which is due to the ssl/ issuer certificate 
 
     cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for ...
 
@@ -50,11 +44,6 @@ Change it to:
     'cookies'         => false
     ];
     php artisan serve
-
-
-To Run test
-
-    php artisan test
 
 
 
