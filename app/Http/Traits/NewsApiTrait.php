@@ -2,7 +2,7 @@
 
 namespace App\Http\Traits;
 
-use Session;
+use Exception;
 
 trait NewsApiTrait
 {
@@ -39,8 +39,8 @@ trait NewsApiTrait
             'Content-Type: application/json'
           ),
         ));
-        
-        
+
+
         try {
           $response = curl_exec($curl);
           curl_close($curl);

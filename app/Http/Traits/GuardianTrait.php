@@ -3,7 +3,7 @@
 namespace App\Http\Traits;
 
 use Illuminate\Support\Facades\Http;
-
+use Exception;
 trait GuardianTrait
 {
 
@@ -19,7 +19,7 @@ trait GuardianTrait
           catch(Exception $e) {
             return  [];
           }
-        
+
     }
 
 

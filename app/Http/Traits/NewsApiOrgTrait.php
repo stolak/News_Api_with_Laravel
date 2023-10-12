@@ -17,10 +17,10 @@ trait NewsApiOrgTrait
             return  json_decode($response, true)['articles'];
           }
           //catch exception
-          catch(Throwable $e) {
+          catch(Exception $e) {
             return  [];
           }
-        
+
     }
 
 
