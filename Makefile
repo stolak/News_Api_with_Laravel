@@ -6,3 +6,5 @@ up
  docker-compose up
 
  docker exec -it article-app2 bash
+
+ php artisan passport:install
