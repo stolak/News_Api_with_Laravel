@@ -9,20 +9,19 @@ services:
     ports:
       - "9002:80"
 
-  article-db:
+  mysql:
     image: mysql:latest
     container_name: article-db
     volumes:
       - ./run/var:/var/lib/mysql
-    environment: 
+    environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
   phpmyadmin:
     image: phpmyadmin
-    restart: always 
+    restart: always
     ports:
       - 8081:80
     environment:
       - PMA_ARBITRARY=1
 
-  
