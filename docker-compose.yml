@@ -15,7 +15,9 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=${DB_DATABASE}
     networks: article-be-app
-    
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql:latest
     container_name: ${DB_HOST}
@@ -41,11 +43,12 @@ services:
     volumes:
       - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
     working_dir: /var/www/html
-    depends_on:
-      - mysql
     entrypoint: ["docker-php-entrypoint"]
     command: ["php", "artisan", "migrate"]
     networks: article-be-app
+    depends_on:
+      - mysql
+      
   laravel-serve:
     build:
       context: .
