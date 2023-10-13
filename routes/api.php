@@ -32,7 +32,7 @@ Route::any('articles',[ArticleController::class,'create']);
 Route::get('articles-with-key/{keyword?}',[ArticleController::class,'index']);
 Route::get('articles',[ArticleController::class,'index']);
 Route::middleware('auth:api')->group( function () {
-    Route::get('preferences',[UserPreferenceController::class,'show_by_user_id']);
-    Route::get('preference-articles/{keyword?}',[ArticleController::class,'show_by_user_preference']);
+    Route::get('preferences',[UserPreferenceController::class,'showByUserId']);
+    Route::get('preference-articles/{keyword?}',[ArticleController::class,'showByUserPreference']);
     Route::post('preference',[UserPreferenceController::class,'store']);
 });

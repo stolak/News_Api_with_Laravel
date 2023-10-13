@@ -21,8 +21,8 @@ class ArticleController extends BaseController
      */
     public function __construct()
     {
-        if($this->is_updateble()){
-            $this->create_new_from_apis();
+        if($this->isUpdateble()){
+            $this->createNewsFromApis();
         }
     }
 
@@ -44,7 +44,7 @@ class ArticleController extends BaseController
      */
     public function create()
     {
-        $this->create_new_from_apis();
+        $this->createNewsFromApis();
         return $this->sendResponse('sucess',[]);
     }
 
@@ -82,7 +82,7 @@ class ArticleController extends BaseController
     /**
      * Display the specified resource.
      */
-    public function show_by_user_preference($keyword='')
+    public function showByUserPreference($keyword='')
     {
         if(Auth::user()){
         $user_id = Auth::user()->id;

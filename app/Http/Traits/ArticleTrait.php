@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Http;
 trait ArticleTrait
 {
     use ConvertHelperTrait;
-    public function store_article($rec)
+    public function storeArticle($rec)
     {
-        
-        
-        foreach($this->object_to_array($rec) as  $val){
+
+
+        foreach($this->objectToArray($rec) as  $val){
             Article::create($val);
         }
-        
+
     }
 
 

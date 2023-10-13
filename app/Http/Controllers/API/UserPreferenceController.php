@@ -52,7 +52,7 @@ class UserPreferenceController extends BaseController
         );
 
         return $this->sendResponse($preference,'');
-        
+
 
     }
 
@@ -78,7 +78,7 @@ class UserPreferenceController extends BaseController
      /**
      * Display the specified resource.
      */
-    public function show_by_user_id()
+    public function showByUserId()
     {
         $user_id = Auth::user()->id;
         $preference = UsersPreference::where('user_id', $user_id)->first();
