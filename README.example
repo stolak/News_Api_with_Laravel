@@ -46,6 +46,11 @@ Change it to:
     php artisan serve
 
 
+To Run test
+
+    php artisan test
+
+
 
 To Run test
 
