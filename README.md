@@ -10,17 +10,26 @@ Switch to the repo folder
     cp .env.example .env
 Edit the neccessary variables
 
-Unsing docker image 
+Using docker image 
 
-    docker-compose build --no-cache --force-rm
+    docker-compose up --build
+The application should be running on port 8080
+    <!-- docker-compose build --no-cache --force-rm
     docker-compose up
     docker exec -it article-be-app bash
     composer install
     cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
     php artisan key:generate
     php artisan migrate
-    php artisan serve
+    php artisan serve -->
 
+
+Running on application without using docker
+    composer install
+    cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+    php artisan key:generate
+    php artisan migrate
+    php artisan serve
 
 Note that  the below command is neccessary in order to avoid the error below which is due to the ssl/ issuer certificate
 
@@ -49,8 +58,6 @@ Change it to:
     'verify'          => false,
     'cookies'         => false
     ];
-    php artisan serve
-
 
 To Run test
 

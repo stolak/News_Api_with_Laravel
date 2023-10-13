@@ -30,3 +30,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN composer install
 
 RUN cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+# RUN php artisan migrate
+# # Generate an application key
+RUN php artisan key:generate
+RUN php artisan serve
+# # Expose port 80 (default for Apache)
+EXPOSE 80
+
+# # The default command to start Apache
+
+CMD ["apache2-foreground"]
+# CMD ["apache2-foreground"]
