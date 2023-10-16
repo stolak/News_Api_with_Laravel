@@ -1,4 +1,5 @@
-version: '3'
+version: '3.1'
+
 services:
   article-be-app:
     container_name: article-be-app
@@ -14,13 +15,15 @@ services:
       - MYSQL_HOST=${DB_HOST}
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=${DB_DATABASE}
-    networks: article-be-app
     depends_on:
       - mysql
+    networks:
+      - mynetwork
 
+
+  # MySQL Database
   mysql:
-    image: mysql:latest
-    container_name: ${DB_HOST}
+    image: mysql:5.7
     volumes:
       - ./run/var:/var/lib/mysql
     environment:
@@ -28,7 +31,18 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
     ports:
       - "3306:3306"
-    networks: article-be-app
+    networks:
+      - mynetwork
+  artisan:
+    build:
+      context: .
+    volumes:
+      - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
+    working_dir: /var/www/html
+    command: ["php", "artisan", "migrate"]
+    depends_on:
+      - mysql
+
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -36,30 +50,9 @@ services:
       - 8081:80
     environment:
       - PMA_ARBITRARY=1
-  artisan:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
-    working_dir: /var/www/html
-    entrypoint: ["docker-php-entrypoint"]
-    command: ["php", "artisan", "migrate"]
-    networks: article-be-app
-    depends_on:
-      - mysql
-      
-  laravel-serve:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8035:8000"
-    volumes:
-      - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
-    working_dir: /var/www/html
-    command: ["php", "artisan", "serve"]
-    networks: article-be-app
+    networks:
+      - mynetwork
+  
+
 networks:
-  article-be-app:
-    name: article-be-app
+  mynetwork:
