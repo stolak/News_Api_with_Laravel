@@ -16,9 +16,10 @@ Using docker image
     docker-compose exec web php artisan migrate
     docker-compose exec web cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
     docker-compose exec web php artisan key:generate
-    docker-compose exec web php artisan serve --host=0.0.0.0
+    docker-compose exec web php artisan passport:install
+    <!-- docker-compose exec web php artisan serve --host=0.0.0.0 -->
 
-The application should be running on http://localhost. 
+The application should be running on http://localhost:9002/public. 
 
 
 Running on application without using docker
