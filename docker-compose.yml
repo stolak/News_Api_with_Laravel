@@ -1,58 +1,33 @@
-version: '3.1'
-
+version: '3'
 services:
-  article-be-app:
-    container_name: article-be-app
+  web:
     build:
-      context: .  # Build from the current directory
+      context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8082:80"
     volumes:
-      - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
-    environment:
-      - APACHE_DOCUMENT_ROOT=/var/www/html/public  # Set the Apache document root to /var/www/html/public
-      - MYSQL_HOST=${DB_HOST}
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=${DB_DATABASE}
-    depends_on:
-      - mysql
+      - .:/var/www/html
     networks:
-      - mynetwork
-
-
-  # MySQL Database
-  mysql:
+      - laravel-net
+  db:
     image: mysql:5.7
-    volumes:
-      - ./run/var:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     networks:
-      - mynetwork
-  artisan:
-    build:
-      context: .
-    volumes:
-      - .:/var/www/html  # Mount your Laravel project directory to /var/www/html
-    working_dir: /var/www/html
-    command: ["php", "artisan", "migrate"]
-    depends_on:
-      - mysql
-
+      - laravel-net
   phpmyadmin:
-    image: phpmyadmin
-    restart: always
-    ports:
-      - 8081:80
+    image: phpmyadmin/phpmyadmin
     environment:
-      - PMA_ARBITRARY=1
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
     networks:
-      - mynetwork
-  
-
+      - laravel-net
 networks:
-  mynetwork:
+  laravel-net:

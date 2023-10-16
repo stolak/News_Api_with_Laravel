@@ -1,32 +1,38 @@
-# Use the official PHP 8.1.0 Apache base image
+# Use an official PHP runtime as a parent image
 FROM php:8.1.0-apache
 
-# Install system dependencies and PHP extensions required for Laravel
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql zip
-
-# Enable Apache modules and set the document root
-RUN a2enmod rewrite
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Copy your Laravel application into the container
-COPY . /var/www/html
-
-# Set the working directory
+# Set the working directory to /var/www/html
 WORKDIR /var/www/html
 
-# Install Composer globally
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    zip \
+    unzip
+
+# Install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd pdo pdo_mysql mbstring exif pcntl bcmath xml zip
+
+# Enable Apache mod_rewrite
+RUN a2enmod rewrite
+
+# Copy your Laravel application into the container
+COPY . .
+
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# # Install Laravel dependencies
+# Install application dependencies
 RUN composer install
 
-RUN cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+# Expose port 80 for Apache
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
