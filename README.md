@@ -12,16 +12,13 @@ Edit the neccessary variables
 
 Using docker image 
 
-    docker-compose up --build
-The application should be running on port 8080
-    <!-- docker-compose build --no-cache --force-rm
-    docker-compose up
-    docker exec -it article-be-app bash
-    composer install
-    cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
-    php artisan key:generate
-    php artisan migrate
-    php artisan serve -->
+    docker-compose up -d
+    docker-compose exec web php artisan migrate
+    docker-compose exec web cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
+    docker-compose exec web php artisan key:generate
+    docker-compose exec web php artisan serve --host=0.0.0.0
+
+The application should be running on http://localhost. 
 
 
 Running on application without using docker
