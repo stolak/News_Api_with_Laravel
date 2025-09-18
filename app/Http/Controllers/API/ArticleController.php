@@ -26,6 +26,36 @@ class ArticleController extends BaseController
         }
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/articles",
+     *     summary="Get list of articles",
+     *     tags={"Articles"},
+     *     @OA\Parameter(name="keyword", in="query", required=false, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Successful operation")
+     * )
+     *
+     * @OA\Post(
+     *     path="/api/articles",
+     *     summary="Create an article",
+     *     tags={"Articles"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="body", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Article created successfully")
+     * )
+     *
+     * @OA\Get(
+     *     path="/api/preference-articles/{keyword}",
+     *     summary="Get articles by user preference and keyword",
+     *     tags={"Articles"},
+     *     @OA\Parameter(name="keyword", in="path", required=false, @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="Successful operation")
+     * )
+     */
     public function index($keyword='')
     {
         // $keyword = $request->get('keyword');

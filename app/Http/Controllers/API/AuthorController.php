@@ -10,7 +10,12 @@ class AuthorController extends BaseController
 {
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/authors",
+     *     summary="Get list of authors",
+     *     tags={"Authors"},
+     *     @OA\Response(response=200, description="Successful operation")
+     * )
      */
     public function index()
     {

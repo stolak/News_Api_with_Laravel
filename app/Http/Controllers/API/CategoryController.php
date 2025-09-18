@@ -10,6 +10,14 @@ class CategoryController extends BaseController
 {
 
     /**
+     * @OA\Get(
+     *     path="/api/categories",
+     *     summary="Get list of categories",
+     *     tags={"Categories"},
+     *     @OA\Response(response=200, description="Successful operation")
+     * )
+     */
+    /**
      * Display a listing of the resource.
      */
     public function index()

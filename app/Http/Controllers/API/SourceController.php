@@ -10,6 +10,14 @@ class SourceController extends BaseController
 {
 
     /**
+     * @OA\Get(
+     *     path="/api/sources",
+     *     summary="Get list of sources",
+     *     tags={"Sources"},
+     *     @OA\Response(response=200, description="Successful operation")
+     * )
+     */
+    /**
      * Display a listing of the resource.
      */
     public function index()
