@@ -27,6 +27,7 @@ Running on application without using docker
     cp Client.example vendor/guzzlehttp/guzzle/src/Client.php
     php artisan key:generate
     php artisan migrate
+    php artisan passport:install
     php artisan serve
 
 Note that  the below command is neccessary in order to avoid the error below which is due to the ssl/ issuer certificate
